@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {randomBytes} from 'node:crypto';
+const root=path.resolve(import.meta.dirname,'..'),dir=path.join(root,'.local-postgres');fs.mkdirSync(dir,{recursive:true});
+if(fs.existsSync(path.join(root,'.env.local')))throw Error('.env.local already exists; refusing to replace credentials');
+const adminPassword=randomBytes(24).toString('hex'),appPassword=randomBytes(24).toString('hex');
+fs.writeFileSync(path.join(dir,'admin-password.txt'),adminPassword+'\n',{mode:0o600});
+fs.writeFileSync(path.join(dir,'bootstrap.json'),JSON.stringify({adminPassword,appPassword}),{mode:0o600});
+fs.writeFileSync(path.join(root,'.env.local'),`APP_ORIGIN=http://localhost:3000\nALLOW_HTTP_LOCALHOST=true\nDATABASE_URL=postgresql://akim_app:${appPassword}@127.0.0.1:54329/akim\nALLOW_REGISTRATION=true\nSESSION_HOURS=12\n`,{mode:0o600});
+console.log('Local database configuration created. Credentials are not printed.');

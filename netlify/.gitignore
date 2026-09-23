@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.env*
+!.env.example
+!.env.production.example
+.local-db/
+.local-postgres/
+*.log
+.review.env
+backup/
+.server.env
+.server.env.tmp
+server-backups/
+.netlify/

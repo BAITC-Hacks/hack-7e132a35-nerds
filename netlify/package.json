@@ -1,0 +1,26 @@
+{
+  "name": "akim-server",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build --webpack",
+    "start": "next start --hostname 0.0.0.0",
+    "db:init": "node --env-file-if-exists=.env.local scripts/migrate.mjs",
+    "user:create": "node --env-file-if-exists=.env.local scripts/create-user.mjs",
+    "test": "node --env-file-if-exists=.env.local tests/auth.test.mjs",
+    "test:http": "node --env-file-if-exists=.env.local tests/http.test.mjs",
+    "test:model": "node tests/model.test.cjs",
+    "test:snapshot": "node --env-file-if-exists=.env.local tests/snapshot.test.mjs"
+  },
+  "dependencies": {
+    "next": "16.3.6",
+    "pg": "^8.16.3",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "pnpm@11.19.0"
+}

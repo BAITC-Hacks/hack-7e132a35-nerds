@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {pipeline} from 'node:stream/promises';
+import {createHash} from 'node:crypto';
+const dir=path.resolve(import.meta.dirname,'../.local-postgres');fs.mkdirSync(dir,{recursive:true});
+const meta=await (await fetch('https://registry.npmjs.org/@embedded-postgres/windows-x64/16.14.0-beta.17')).json();
+if(!meta.dist?.tarball?.startsWith('https://registry.npmjs.org/'))throw Error('Unexpected registry metadata');
+const response=await fetch(meta.dist.tarball);if(!response.ok)throw Error('PostgreSQL download failed');
+const file=path.join(dir,'postgres.tgz');await pipeline(response.body,fs.createWriteStream(file));
+const actual='sha512-'+createHash('sha512').update(fs.readFileSync(file)).digest('base64');
+if(actual!==meta.dist.integrity)throw Error('Archive integrity check failed');
+console.log('PostgreSQL 16.14 downloaded and verified.');

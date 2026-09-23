@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.env*
+.review.env
+.server.env
+.server.env.tmp
+server-backups
+.local-postgres
+.local-db
+*.zip
+*.log
